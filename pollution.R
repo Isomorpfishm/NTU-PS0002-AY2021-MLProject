@@ -168,8 +168,69 @@ abline(0, 1, col = "red")
 
 
 
+# <-------------------- Classification: SVM -------------------->
+library(e1071)
+set.seed(101)
+svm.linear.2 <- svm(risk ~ I(prep^2) + jan.temp + jul.temp + older.65 + ppl.household + I(school.year^2) + I(housing.unit^2) + ppl.sqmile + I(ppl.nonwhite^2) + I(white.collar^2) + income + hc + nox + I(so2^2) + rel.humidity + age, data = train.data, kernel = "linear")
+svm.radial.2 <- svm(risk ~ I(prep^2) + jan.temp + jul.temp + older.65 + ppl.household + I(school.year^2) + I(housing.unit^2) + ppl.sqmile + I(ppl.nonwhite^2) + I(white.collar^2) + income + hc + nox + I(so2^2) + rel.humidity + age, data = train.data, kernel = "radial", gamma=0.1, cost=1)
+svm.sigmoid.2 <- svm(risk ~ I(prep^2) + jan.temp + jul.temp + older.65 + ppl.household + I(school.year^2) + I(housing.unit^2) + ppl.sqmile + I(ppl.nonwhite^2) + I(white.collar^2) + income + hc + nox + I(so2^2) + rel.humidity + age, data = train.data, kernel = "sigmoid", gamma=0.1, cost=1)
+svm.linear.1 <- svm(risk ~ prep+ jan.temp + jul.temp + older.65 + ppl.household + school.year + housing.unit + ppl.sqmile + ppl.nonwhite + white.collar + income + hc + nox + so2 + rel.humidity + age, data = train.data, kernel = "linear")
+svm.radial.1 <- svm(risk ~ prep+ jan.temp + jul.temp + older.65 + ppl.household + school.year + housing.unit + ppl.sqmile + ppl.nonwhite + white.collar + income + hc + nox + so2 + rel.humidity + age, data = train.data, kernel = "radial", gamma=0.1, cost=1)
+svm.sigmoid.1 <- svm(risk ~ prep+ jan.temp + jul.temp + older.65 + ppl.household + school.year + housing.unit + ppl.sqmile + ppl.nonwhite + white.collar + income + hc + nox + so2 + rel.humidity + age, data = train.data, kernel = "sigmoid", gamma=0.1, cost=1)
+
+pred.svm.linear.2 <- predict(svm.linear.2, newdata=test.data)
+pred.svm.radial.2 <- predict(svm.radial.2, newdata=test.data)
+pred.svm.sigmoid.2 <- predict(svm.sigmoid.2, newdata=test.data)
+pred.svm.linear.1 <- predict(svm.linear.1, newdata=test.data)
+pred.svm.radial.1 <- predict(svm.radial.1, newdata=test.data)
+pred.svm.sigmoid.1 <- predict(svm.sigmoid.1, newdata=test.data)
+
+table(pred.svm.linear.1, test.data$risk)
+table(pred.svm.linear.2, test.data$risk)
+table(pred.svm.radial.1, test.data$risk)
+table(pred.svm.radial.2, test.data$risk)
+table(pred.svm.sigmoid.1, test.data$risk)
+table(pred.svm.sigmoid.2, test.data$risk)
+
+mean(pred.svm.linear.1 == test.data$risk)
+mean(pred.svm.linear.2 == test.data$risk)
+mean(pred.svm.radial.1 == test.data$risk)
+mean(pred.svm.radial.2 == test.data$risk)
+mean(pred.svm.sigmoid.1 == test.data$risk)
+mean(pred.svm.sigmoid.2 == test.data$risk)
+
+table(pred.svm.linear.1, test.data$risk)
+table(pred.svm.linear.2, test.data$risk)
+table(pred.svm.radial.1, test.data$risk)
+table(pred.svm.radial.2, test.data$risk)
+table(pred.svm.sigmoid.1, test.data$risk)
+table(pred.svm.sigmoid.2, test.data$risk)
+
+
+# <-------------------- Classification: Multi-class Logistic Regression -------------------->
+# Fit the model
+lg.model.2 <- nnet::multinom(risk ~ I(prep^2) + jan.temp + jul.temp + older.65 + ppl.household + I(school.year^2) + I(housing.unit^2) + ppl.sqmile + I(ppl.nonwhite^2) + I(white.collar^2) + income + hc + nox + I(so2^2) + rel.humidity, data = train.data)
+lg.model.1 <- nnet::multinom(risk ~ prep + jan.temp + jul.temp + older.65 + ppl.household + school.year + housing.unit + ppl.sqmile + ppl.nonwhite + white.collar + income + hc + nox + so2 + rel.humidity, data = train.data)
+
+# Make predictions
+predicted.classes.2 <- lg.model.2 %>% predict(test.data)
+predicted.classes.1 <- lg.model.1 %>% predict(test.data)
+
+# Model accuracy
+mean(predicted.classes.1 == test.data$risk)
+mean(predicted.classes.2 == test.data$risk)
+
+table(predicted.classes.1, test.data$risk)
+table(predicted.classes.2, test.data$risk)
+
+
+
+
+
+
+
 # <-------------------- Unsupervised Learning (k=3) -------------------->
-pol <- pollution %>% select(-age) %>% scale
+pol <- scale(pollution)
 k3 <- kmeans(pol, centers = 3, nstart = 25)
 str(k3)
 k3
@@ -196,10 +257,10 @@ points(x=6, y=393, pch=21, col="red", cex=3, lwd=5)
 k4 <- kmeans(pol, centers=4, nstart=25)
 k5 <- kmeans(pol, centers=5, nstart=25)
 
-p1 <- fviz_cluster(k3, geom = "point", data = select(pollution, -age)) + ggtitle("k = 3")
-p2 <- fviz_cluster(k6, geom = "point", data = select(pollution, -age)) + ggtitle("k = 6")
-p3 <- fviz_cluster(k4, geom = "point", data = select(pollution, -age)) + ggtitle("k = 4")
-p4 <- fviz_cluster(k5, geom = "point", data = select(pollution, -age)) + ggtitle("k = 5")
+p1 <- fviz_cluster(k3, geom = "point", data = pollution) + ggtitle("k = 3")
+p2 <- fviz_cluster(k6, geom = "point", data = pollution) + ggtitle("k = 6")
+p3 <- fviz_cluster(k4, geom = "point", data = pollution) + ggtitle("k = 4")
+p4 <- fviz_cluster(k5, geom = "point", data = pollution) + ggtitle("k = 5")
 
 grid.arrange(p1, p2, p3, p4, nrow=2)
 
@@ -210,5 +271,3 @@ grid.arrange(s1, s2, nrow = 1)
 
 # Extract the clusters and add it to the initial data to summarize descriptive statistics at the cluster level:
 pollution %>% mutate(Cluster = k6$cluster) %>% group_by(Cluster) %>% summarise_all("mean")
-
-
