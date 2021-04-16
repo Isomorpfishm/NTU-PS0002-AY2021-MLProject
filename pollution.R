@@ -66,8 +66,7 @@ pollution <- pollution %>% rename(age = y,
                                   hc = x12, 
                                   nox = x13, 
                                   so2 = x14, 
-                                  rel.humidity = x15,
-                                  risk = z)
+                                  rel.humidity = x15)
 
 # <-------------------- Histogram density plot -------------------->
 ggplot(pollution, aes(age)) + geom_histogram(bins = 30, aes(y=..density..), colour = "black", fill = "white", na.rm = TRUE) + labs(x="Total Age Adjusted Mortality Rate", y="Density")  + geom_density(alpha = .2, fill = "pink")
@@ -113,7 +112,7 @@ RMSE(predictions, test.data$age) # compute the prediction error RMSE
 
 # <-------------------- kNN Model (Second Method) -------------------->
 # Significant predictor variables are in second order; otherwise, in linear order
-model.knn.2 <- train(age ~ I(prep^2) + jan.temp + jul.temp + older.65 + ppl.household + I(school.year^2) + I(housing.unit^2) + ppl.sqmile + I(ppl.nonwhite^2) + I(white.collar^2) + income + hc + nox + I(so2^2) + rel.humidity,  data = pollution, method = "knn", trControl = trainControl("cv", number = 3), preProcess = c("center", "scale"), tuneLength = 10)
+model.knn.2 <- train(age ~ I(prep^2) + jan.temp + jul.temp + older.65 + ppl.household + I(school.year^2) + I(housing.unit^2) + ppl.sqmile + I(ppl.nonwhite^2) + white.collar + I(income^2) + hc + nox + I(so2^2) + rel.humidity,  data = pollution, method = "knn", trControl = trainControl("cv", number = 3), preProcess = c("center", "scale"), tuneLength = 10)
 plot(model.knn.2)
 model.knn.2$bestTune
 predictions <- predict(model.knn.2, test.data)
@@ -133,7 +132,7 @@ predictions <- predict(lmodel, test.data)
 RMSE(predictions, test.data$age)
 
 # <-------------------- LR Model (Second Method) -------------------->
-lmodel.2 <- lm(age ~ I(prep^2) + jan.temp + jul.temp + older.65 + ppl.household + I(school.year^2) + I(housing.unit^2) + ppl.sqmile + I(ppl.nonwhite^2) + I(white.collar^2) + income + hc + nox + I(so2^2) + rel.humidity, data = train.data)
+lmodel.2 <- lm(age ~ I(prep^2) + jan.temp + jul.temp + older.65 + ppl.household + I(school.year^2) + I(housing.unit^2) + ppl.sqmile + I(ppl.nonwhite^2) + white.collar + I(income^2) + hc + nox + I(so2^2) + rel.humidity, data = train.data)
 summary(lmodel.2)
 predictions <- predict(lmodel.2, test.data)
 RMSE(predictions, test.data$age)
@@ -172,9 +171,9 @@ abline(0, 1, col = "red")
 # <-------------------- Classification: SVM -------------------->
 library(e1071)
 set.seed(101)
-svm.linear.2 <- svm(risk ~ I(prep^2) + jan.temp + jul.temp + older.65 + ppl.household + I(school.year^2) + I(housing.unit^2) + ppl.sqmile + I(ppl.nonwhite^2) + I(white.collar^2) + income + hc + nox + I(so2^2) + rel.humidity + age, data = train.data, kernel = "linear")
-svm.radial.2 <- svm(risk ~ I(prep^2) + jan.temp + jul.temp + older.65 + ppl.household + I(school.year^2) + I(housing.unit^2) + ppl.sqmile + I(ppl.nonwhite^2) + I(white.collar^2) + income + hc + nox + I(so2^2) + rel.humidity + age, data = train.data, kernel = "radial")
-svm.sigmoid.2 <- svm(risk ~ I(prep^2) + jan.temp + jul.temp + older.65 + ppl.household + I(school.year^2) + I(housing.unit^2) + ppl.sqmile + I(ppl.nonwhite^2) + I(white.collar^2) + income + hc + nox + I(so2^2) + rel.humidity + age, data = train.data, kernel = "sigmoid")
+svm.linear.2 <- svm(risk ~ I(prep^2) + jan.temp + jul.temp + older.65 + ppl.household + I(school.year^2) + I(housing.unit^2) + ppl.sqmile + I(ppl.nonwhite^2) + white.collar + I(income^2) + hc + nox + I(so2^2) + rel.humidity + age, data = train.data, kernel = "linear")
+svm.radial.2 <- svm(risk ~ I(prep^2) + jan.temp + jul.temp + older.65 + ppl.household + I(school.year^2) + I(housing.unit^2) + ppl.sqmile + I(ppl.nonwhite^2) + white.collar + I(income^2) + hc + nox + I(so2^2) + rel.humidity + age, data = train.data, kernel = "radial")
+svm.sigmoid.2 <- svm(risk ~ I(prep^2) + jan.temp + jul.temp + older.65 + ppl.household + I(school.year^2) + I(housing.unit^2) + ppl.sqmile + I(ppl.nonwhite^2) + white.collar + I(income^2) + hc + nox + I(so2^2) + rel.humidity + age, data = train.data, kernel = "sigmoid")
 svm.linear.1 <- svm(risk ~ prep+ jan.temp + jul.temp + older.65 + ppl.household + school.year + housing.unit + ppl.sqmile + ppl.nonwhite + white.collar + income + hc + nox + so2 + rel.humidity + age, data = train.data, kernel = "linear")
 svm.radial.1 <- svm(risk ~ prep+ jan.temp + jul.temp + older.65 + ppl.household + school.year + housing.unit + ppl.sqmile + ppl.nonwhite + white.collar + income + hc + nox + so2 + rel.humidity + age, data = train.data, kernel = "radial")
 svm.sigmoid.1 <- svm(risk ~ prep+ jan.temp + jul.temp + older.65 + ppl.household + school.year + housing.unit + ppl.sqmile + ppl.nonwhite + white.collar + income + hc + nox + so2 + rel.humidity + age, data = train.data, kernel = "sigmoid")
