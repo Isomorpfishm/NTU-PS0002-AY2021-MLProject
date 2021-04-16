@@ -27,6 +27,7 @@ library(corrplot)
 library(datarium)
 library(psych)
 library(gridExtra)
+library(factoextra)
 
 # <-------------------- Data Preparation -------------------->
 read.table("pollution.txt", header=T) -> pollution
@@ -51,6 +52,22 @@ risk.medium <- pollution2 %>% filter(risk %in% c("medium"))
 risk.high <- pollution2 %>% filter(risk %in% c("high"))
 
 # <-------------------- Rename the variables -------------------->
+pollution2 <- pollution2 %>% rename(age = y, 
+                                    prep = x1, 
+                                    jan.temp = x2, 
+                                    jul.temp = x3, 
+                                    older.65 = x4, 
+                                    ppl.household = x5, 
+                                    school.year = x6,
+                                    housing.unit = x7,
+                                    ppl.sqmile = x8,
+                                    ppl.nonwhite = x9, 
+                                    white.collar = x10, 
+                                    income = x11, 
+                                    hc = x12, 
+                                    nox = x13, 
+                                    so2 = x14, 
+                                    rel.humidity = x15)
 pollution <- pollution %>% rename(age = y, 
                                   prep = x1, 
                                   jan.temp = x2, 
@@ -94,9 +111,9 @@ pollution %>% ggplot(aes(x = ppl.nonwhite, y = age)) + geom_point() + geom_smoot
 
 
 # <-------------------- Training and Testing Set Preparation -------------------->
-training.idx <- sample(1: nrow(pollution), size=nrow(pollution) * 0.8)
-train.data  <- pollution[training.idx, ]
-test.data <- pollution[-training.idx, ]
+training.idx <- sample(1: nrow(pollution2), size=nrow(pollution2) * 0.8)
+train.data  <- pollution2[training.idx, ]
+test.data <- pollution2[-training.idx, ]
 
 
 
@@ -127,7 +144,6 @@ abline(0, 1, col="red") # add a reference line x=y
 
 # <-------------------- LR Model (First Method) -------------------->
 lmodel <- lm(age ~., data = train.data)
-summary(lmodel)
 predictions <- predict(lmodel, test.data)
 RMSE(predictions, test.data$age)
 
@@ -161,7 +177,7 @@ rf2$finalModel
 predictions <- predict(rf2, test.data)
 RMSE(predictions, test.data$age)
 
-plot(test.data$age, predictions.rf.2, main="Prediction performance of Random Forest Model", ylab="Predictions RF")
+plot(test.data$age, predictions, main="Prediction performance of Random Forest Model", ylab="Predictions RF")
 abline(0, 1, col = "red")
 
 
