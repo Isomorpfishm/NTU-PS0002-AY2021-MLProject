@@ -155,7 +155,7 @@ predictions <- predict(rf1, test.data)
 RMSE(predictions, test.data$age)
 
 # <-------------------- RF Model (Second Method) -------------------->
-rf2 <- train(age ~ I(prep^2) + jan.temp + jul.temp + older.65 + ppl.household + I(school.year^2) + I(housing.unit^2) + ppl.sqmile + I(ppl.nonwhite^2) + I(white.collar^2) + income + hc + nox + I(so2^2) + rel.humidity, data = pollution, method = "rf", tuneGrid = tg)
+rf2 <- train(age ~ I(prep^2) + jan.temp + jul.temp + older.65 + ppl.household + I(school.year^2) + I(housing.unit^2) + ppl.sqmile + I(ppl.nonwhite^2) + white.collar + I(income^2) + hc + nox + I(so2^2) + rel.humidity, data = pollution, method = "rf", tuneGrid = tg)
 rf2$results
 rf2$finalModel
 predictions <- predict(rf2, test.data)
