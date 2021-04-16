@@ -172,11 +172,11 @@ abline(0, 1, col = "red")
 library(e1071)
 set.seed(101)
 svm.linear.2 <- svm(risk ~ I(prep^2) + jan.temp + jul.temp + older.65 + ppl.household + I(school.year^2) + I(housing.unit^2) + ppl.sqmile + I(ppl.nonwhite^2) + I(white.collar^2) + income + hc + nox + I(so2^2) + rel.humidity + age, data = train.data, kernel = "linear")
-svm.radial.2 <- svm(risk ~ I(prep^2) + jan.temp + jul.temp + older.65 + ppl.household + I(school.year^2) + I(housing.unit^2) + ppl.sqmile + I(ppl.nonwhite^2) + I(white.collar^2) + income + hc + nox + I(so2^2) + rel.humidity + age, data = train.data, kernel = "radial", gamma=0.1, cost=1)
-svm.sigmoid.2 <- svm(risk ~ I(prep^2) + jan.temp + jul.temp + older.65 + ppl.household + I(school.year^2) + I(housing.unit^2) + ppl.sqmile + I(ppl.nonwhite^2) + I(white.collar^2) + income + hc + nox + I(so2^2) + rel.humidity + age, data = train.data, kernel = "sigmoid", gamma=0.1, cost=1)
+svm.radial.2 <- svm(risk ~ I(prep^2) + jan.temp + jul.temp + older.65 + ppl.household + I(school.year^2) + I(housing.unit^2) + ppl.sqmile + I(ppl.nonwhite^2) + I(white.collar^2) + income + hc + nox + I(so2^2) + rel.humidity + age, data = train.data, kernel = "radial")
+svm.sigmoid.2 <- svm(risk ~ I(prep^2) + jan.temp + jul.temp + older.65 + ppl.household + I(school.year^2) + I(housing.unit^2) + ppl.sqmile + I(ppl.nonwhite^2) + I(white.collar^2) + income + hc + nox + I(so2^2) + rel.humidity + age, data = train.data, kernel = "sigmoid")
 svm.linear.1 <- svm(risk ~ prep+ jan.temp + jul.temp + older.65 + ppl.household + school.year + housing.unit + ppl.sqmile + ppl.nonwhite + white.collar + income + hc + nox + so2 + rel.humidity + age, data = train.data, kernel = "linear")
-svm.radial.1 <- svm(risk ~ prep+ jan.temp + jul.temp + older.65 + ppl.household + school.year + housing.unit + ppl.sqmile + ppl.nonwhite + white.collar + income + hc + nox + so2 + rel.humidity + age, data = train.data, kernel = "radial", gamma=0.1, cost=1)
-svm.sigmoid.1 <- svm(risk ~ prep+ jan.temp + jul.temp + older.65 + ppl.household + school.year + housing.unit + ppl.sqmile + ppl.nonwhite + white.collar + income + hc + nox + so2 + rel.humidity + age, data = train.data, kernel = "sigmoid", gamma=0.1, cost=1)
+svm.radial.1 <- svm(risk ~ prep+ jan.temp + jul.temp + older.65 + ppl.household + school.year + housing.unit + ppl.sqmile + ppl.nonwhite + white.collar + income + hc + nox + so2 + rel.humidity + age, data = train.data, kernel = "radial")
+svm.sigmoid.1 <- svm(risk ~ prep+ jan.temp + jul.temp + older.65 + ppl.household + school.year + housing.unit + ppl.sqmile + ppl.nonwhite + white.collar + income + hc + nox + so2 + rel.humidity + age, data = train.data, kernel = "sigmoid")
 
 pred.svm.linear.2 <- predict(svm.linear.2, newdata=test.data)
 pred.svm.radial.2 <- predict(svm.radial.2, newdata=test.data)
@@ -271,3 +271,5 @@ grid.arrange(s1, s2, nrow = 1)
 
 # Extract the clusters and add it to the initial data to summarize descriptive statistics at the cluster level:
 pollution %>% mutate(Cluster = k6$cluster) %>% group_by(Cluster) %>% summarise_all("mean")
+
+
