@@ -8,6 +8,7 @@ R Packages used and their versions:
 * `corrplot` (ver 0.86)
 * `datarium` (ver 0.1.0)
 * `dplyr` (ver 1.0.2)
+* `factoextra` (ver 1.0.7)
 * `ggplot2` (ver 3.3.3)
 * `gridExtra` (ver 2.3)
 * `psych` (ver 2.0.12)
