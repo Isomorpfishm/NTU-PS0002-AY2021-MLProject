@@ -66,7 +66,8 @@ pollution <- pollution %>% rename(age = y,
                                   hc = x12, 
                                   nox = x13, 
                                   so2 = x14, 
-                                  rel.humidity = x15)
+                                  rel.humidity = x15,
+                                  risk = z)
 
 # <-------------------- Histogram density plot -------------------->
 ggplot(pollution, aes(age)) + geom_histogram(bins = 30, aes(y=..density..), colour = "black", fill = "white", na.rm = TRUE) + labs(x="Total Age Adjusted Mortality Rate", y="Density")  + geom_density(alpha = .2, fill = "pink")
