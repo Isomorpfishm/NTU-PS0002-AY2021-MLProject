@@ -14,3 +14,5 @@ R Packages used and their versions:
 * `gridExtra` (ver 2.3)
 * `nnet` (ver 7.3-15)
 * `psych` (ver 2.0.12)
+
+Tasks involved: Classification and Regression.
