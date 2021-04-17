@@ -13,8 +13,8 @@
 # `x7` Percent of housing units that are found with facilities
 # `x8` Population per square mile in urbanized area in 1960
 # `x9` Percent of 1960 urbanized area population that is non-white
-# `x10` Percent employment in white-collar occupations in 1960 urbanized area
-# `x11` Percent of families with income under 3; 000 in 1960 urbanized area
+# `x10` Percent of families with income under 3,000 in 1960 urbanized area
+# `x11` Percent employment in white-collar occupations in 1960 urbanized area
 # `x12` Relative population potential of hydrocarbons, HC
 # `x13` Relative pollution potential of oxides of nitrogen, NOx
 # `x14` Relative pollution potential of sulfur dioxide, SO2
@@ -54,8 +54,8 @@ pollution2 <- pollution2 %>% rename(age = y,
                                     housing.unit = x7,
                                     ppl.sqmile = x8,
                                     ppl.nonwhite = x9, 
-                                    white.collar = x10, 
-                                    income = x11, 
+                                    income = x10, 
+                                    white.collar = x11, 
                                     hc = x12, 
                                     nox = x13, 
                                     so2 = x14, 
@@ -70,8 +70,8 @@ pollution <- pollution %>% rename(age = y,
                                   housing.unit = x7,
                                   ppl.sqmile = x8,
                                   ppl.nonwhite = x9, 
-                                  white.collar = x10, 
-                                  income = x11, 
+                                  income = x10, 
+                                  white.collar = x11, 
                                   hc = x12, 
                                   nox = x13, 
                                   so2 = x14, 
