@@ -28,6 +28,7 @@ library(datarium)
 library(psych)
 library(gridExtra)
 library(factoextra)
+library(e1071)
 
 # <-------------------- Data Preparation -------------------->
 read.table("pollution.txt", header=T) -> pollution
@@ -182,8 +183,6 @@ abline(0, 1, col = "red")
 
 
 # <-------------------- Classification: SVM -------------------->
-library(e1071)
-set.seed(101)
 svm.linear.2 <- svm(risk ~ I(prep^2) + jan.temp + jul.temp + older.65 + ppl.household + I(school.year^2) + I(housing.unit^2) + ppl.sqmile + I(ppl.nonwhite^2) + white.collar + I(income^2) + hc + nox + I(so2^2) + rel.humidity + age, data = train.data, kernel = "linear")
 svm.radial.2 <- svm(risk ~ I(prep^2) + jan.temp + jul.temp + older.65 + ppl.household + I(school.year^2) + I(housing.unit^2) + ppl.sqmile + I(ppl.nonwhite^2) + white.collar + I(income^2) + hc + nox + I(so2^2) + rel.humidity + age, data = train.data, kernel = "radial")
 svm.sigmoid.2 <- svm(risk ~ I(prep^2) + jan.temp + jul.temp + older.65 + ppl.household + I(school.year^2) + I(housing.unit^2) + ppl.sqmile + I(ppl.nonwhite^2) + white.collar + I(income^2) + hc + nox + I(so2^2) + rel.humidity + age, data = train.data, kernel = "sigmoid")
@@ -229,6 +228,7 @@ predicted.classes.1 <- lg.model.1 %>% predict(test.data)
 mean(predicted.classes.1 == test.data$risk)
 mean(predicted.classes.2 == test.data$risk)
 
+# Comparison table
 table(predicted.classes.1, test.data$risk)
 table(predicted.classes.2, test.data$risk)
 
