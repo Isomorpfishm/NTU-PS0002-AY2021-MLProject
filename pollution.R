@@ -144,12 +144,20 @@ abline(0, 1, col="red") # add a reference line x=y
 lmodel <- lm(age ~., data = train.data)
 predictions <- predict(lmodel, test.data)
 RMSE(predictions, test.data$age)
+par(mfrow=c(2, 2))
+plot(lmodel)
+
+# Removing outliers
+pollution2.1 <- polution2[-c(8, 34, 14), ]
+training.idx.2 <- sample(1:nrow(pollution2.1), size=nrow(pollution2.1)*0.8)
+train.data.2 <- pollution2.1[training.idx.2, ]
+test.data.2 <- pollution2.1[-training.idx.2, ]
 
 # <-------------------- LR Model (Second Method) -------------------->
-lmodel.2 <- lm(age ~ I(prep^2) + jan.temp + jul.temp + older.65 + ppl.household + I(school.year^2) + I(housing.unit^2) + ppl.sqmile + I(ppl.nonwhite^2) + white.collar + I(income^2) + hc + nox + I(so2^2) + rel.humidity, data = train.data)
+lmodel.2 <- lm(age ~ I(prep^2) + jan.temp + jul.temp + older.65 + ppl.household + I(school.year^2) + I(housing.unit^2) + ppl.sqmile + I(ppl.nonwhite^2) + white.collar + I(income^2) + hc + nox + I(so2^2) + rel.humidity, data = train.data.2)
 summary(lmodel.2)
-predictions <- predict(lmodel.2, test.data)
-RMSE(predictions, test.data$age)
+predictions <- predict(lmodel.2, test.data.2)
+RMSE(predictions, test.data.2$age)
 
 plot(test.data$age, predictions, main="Prediction performance of linear regression")
 abline(0, 1, col = "red")
