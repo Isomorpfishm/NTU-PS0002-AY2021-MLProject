@@ -38,18 +38,9 @@ pollution2 <- mutate(pollution, risk=ifelse(790 <= y & y <= 899, "low", ifelse(9
 # It is because Q1 = 899 and Q3 = 984 by direct calculatons
 pollution2$risk <- as.factor(pollution2$risk)
 
-pollution <- as_tibble(pollution)
-pollution2 <- as_tibble(pollution2)
-
-str(pollution)
-str(pollution2)
-
-summary(pollution)
-summary(pollution2)
-
-risk.low <- pollution2 %>% filter(risk %in% c("low"))
-risk.medium <- pollution2 %>% filter(risk %in% c("medium"))
-risk.high <- pollution2 %>% filter(risk %in% c("high"))
+#risk.low <- pollution2 %>% filter(risk %in% c("low"))
+#risk.medium <- pollution2 %>% filter(risk %in% c("medium"))
+#risk.high <- pollution2 %>% filter(risk %in% c("high"))
 
 # <-------------------- Rename the variables -------------------->
 pollution2 <- pollution2 %>% rename(age = y, 
@@ -84,6 +75,12 @@ pollution <- pollution %>% rename(age = y,
                                   nox = x13, 
                                   so2 = x14, 
                                   rel.humidity = x15)
+
+pollution <- as_tibble(pollution)
+pollution2 <- as_tibble(pollution2)
+
+str(pollution2)
+summary(pollution2)
 
 # <-------------------- Histogram density plot -------------------->
 ggplot(pollution, aes(age)) + geom_histogram(bins = 30, aes(y=..density..), colour = "black", fill = "white", na.rm = TRUE) + labs(x="Total Age Adjusted Mortality Rate", y="Density")  + geom_density(alpha = .2, fill = "pink")
@@ -215,17 +212,13 @@ mean(pred.svm.radial.2 == test.data$risk)
 mean(pred.svm.sigmoid.1 == test.data$risk)
 mean(pred.svm.sigmoid.2 == test.data$risk)
 
-table(pred.svm.linear.1, test.data$risk)
-table(pred.svm.linear.2, test.data$risk)
-table(pred.svm.radial.1, test.data$risk)
-table(pred.svm.radial.2, test.data$risk)
-table(pred.svm.sigmoid.1, test.data$risk)
-table(pred.svm.sigmoid.2, test.data$risk)
+
+
 
 
 # <-------------------- Classification: Multi-class Logistic Regression -------------------->
 # Fit the model
-lg.model.2 <- nnet::multinom(risk ~ I(prep^2) + jan.temp + jul.temp + older.65 + ppl.household + I(school.year^2) + I(housing.unit^2) + ppl.sqmile + I(ppl.nonwhite^2) + I(white.collar^2) + income + hc + nox + I(so2^2) + rel.humidity, data = train.data)
+lg.model.2 <- nnet::multinom(risk ~ I(prep^2) + jan.temp + jul.temp + older.65 + ppl.household + I(school.year^2) + I(housing.unit^2) + ppl.sqmile + I(ppl.nonwhite^2) + white.collar + I(income^2) + hc + nox + I(so2^2) + rel.humidity, data = train.data)
 lg.model.1 <- nnet::multinom(risk ~ prep + jan.temp + jul.temp + older.65 + ppl.household + school.year + housing.unit + ppl.sqmile + ppl.nonwhite + white.collar + income + hc + nox + so2 + rel.humidity, data = train.data)
 
 # Make predictions
@@ -243,7 +236,7 @@ table(predicted.classes.2, test.data$risk)
 
 
 
-
+# <-------------------- EXTRA -- K-MEANS CLUSTERING -------------------->
 
 # <-------------------- Unsupervised Learning (k=3) -------------------->
 pol <- scale(pollution)
