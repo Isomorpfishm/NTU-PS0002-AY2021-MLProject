@@ -16,3 +16,5 @@ R Packages used and their versions:
 * `psych` (ver 2.0.12)
 
 Tasks involved: Classification and Regression.
+1. Classification: Multiclass logistic regression and SVMs (linear, radial, and sigmoid kernels)
+2. Regression: kNN, Linear Regression, and Random Forests
